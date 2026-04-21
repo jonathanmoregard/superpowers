@@ -49,7 +49,7 @@ This structure informs the task decomposition. Each task should produce self-con
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (default) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -133,20 +133,18 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving the plan, dispatch execution immediately. **Do not ask the user which execution mode to use — you decide based on the plan.**
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+**Default: superpowers:subagent-driven-development** — fresh subagent per task, two-stage review (spec compliance, then code quality). Use this unless one of the exceptions below applies.
 
-**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
+**Use superpowers:executing-plans instead when:**
+- Tasks are tightly coupled (each depends on not-yet-committed in-memory state from prior)
+- Tasks are tiny/fast (subagent spawn overhead exceeds the work)
+- Plan is exploratory and likely to change mid-execution from findings
+- Debug flow where already-gathered context (stack traces, recent reads) must carry forward
+- Each step needs user judgment pause (pause-and-confirm beats subagent autonomy)
+- Single-file refactor with no parallel benefit
 
-**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
+If none of those apply, dispatch subagent-driven-development.
 
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- Fresh subagent per task + two-stage review
-
-**If Inline Execution chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
-- Batch execution with checkpoints for review
+Announce the decision in one sentence: "Plan saved to `docs/superpowers/plans/<filename>.md`. Dispatching [subagent-driven-development | executing-plans] because [one-line reason]."

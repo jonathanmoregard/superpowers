@@ -70,12 +70,27 @@ digraph brainstorming {
 **Understanding the idea:**
 
 - Check out the current project state first (files, docs, recent commits)
+- **Use context already loaded in your conversation** — `CLAUDE.md`, open files, recent commits, git status, memory, and anything the user has already told you *are already available to you*. Never ask a question whose answer is already in your current context. Before asking anything, do a mental scan of what you already know and answer the question yourself if you can.
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
+
+**Question discipline (read before asking anything):**
+
+This section exists because users consistently report brainstorming asking too many low-value questions, especially on small tasks. Apply all four rules below.
+
+1. **Impact gate — ask only when the answer changes the spec.** Before every question, silently answer: "If the user said X vs Y, what part of the design, architecture, or UX would change?" If the honest answer is "nothing material," do NOT ask — pick the most reasonable default and state it as an assumption (see rule 2). Ask only when competing answers produce materially different designs. This is your primary filter.
+
+2. **Assumption-first for low-impact gaps — default out loud instead of asking.** Where a defensible default exists (framework choice, file layout, naming convention, error-format specifics, logging level, test framework within the project's existing stack), state the assumption explicitly and move on. Format: *"Assuming `<default>` — let me know if you'd rather `<alternative>`."* This gives the user a chance to correct without stopping the flow for them.
+
+3. **Scope-scale — small tasks default to assumption-first.** For changes scoped to a single file or a single behavior tweak, the default is to ask **zero** questions. Pick defaults, announce them in one line, proceed to the design. Only ask when the impact gate in rule 1 clearly fires. Do not ask questions to fill a quota; do not ask to "be thorough" on a small change.
+
+4. **Soft cap: 3–5 questions total.** If you've already asked 3 questions and still feel uncertain, review what remains — can you resolve the rest via assumption-first (rule 2)? If a 4th or 5th question is truly needed, ask it. **After 5, no more questions — switch entirely to assumption-first mode** and state remaining assumptions as a list at the top of the design, letting the user correct any that are wrong.
+
+Exception: **project-shaping decisions** (language/framework choice when not yet set, persistence strategy, core data model, public API shape) are high-impact and the cap doesn't apply to them — but rule 1 still does.
 
 **Exploring approaches:**
 
@@ -137,12 +152,17 @@ Wait for the user's response. If they request changes, make them and re-run the 
 
 ## Key Principles
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
+- **Use context you already have** - `CLAUDE.md`, open files, recent commits, memory, prior messages. Answer your own question from that before asking the user.
+- **Impact gate before every question** - Only ask when competing answers would materially change the design. Otherwise, pick a default and state it.
+- **Assumption-first over asking** - For low-impact gaps, default aloud ("Assuming X — say if you'd rather Y") and keep moving.
+- **Soft cap 3–5 questions total** - After 5, switch to pure assumption-first and list remaining assumptions at the top of the design.
+- **Small tasks → zero questions by default** - Single-file or single-behavior changes: pick defaults, announce, design. Don't ask to fill quota.
+- **One question at a time** - When you do ask, one per message.
+- **Multiple choice preferred** - Easier to answer than open-ended.
+- **YAGNI ruthlessly** - Remove unnecessary features from all designs.
+- **Explore alternatives** - Always propose 2-3 approaches before settling.
+- **Incremental validation** - Present design, get approval before moving on.
+- **Be flexible** - Go back and clarify when something doesn't make sense.
 
 ## Visual Companion
 

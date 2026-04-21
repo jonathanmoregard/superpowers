@@ -31,6 +31,8 @@ digraph when_to_use {
 }
 ```
 
+**Decide, don't ask.** The selection between subagent-driven-development and executing-plans is your call based on the decision tree above — never a question to the user. Announce the choice in one sentence, then dispatch.
+
 **vs. Executing Plans (parallel session):**
 - Same session (no context switch)
 - Fresh subagent per task (no context pollution)

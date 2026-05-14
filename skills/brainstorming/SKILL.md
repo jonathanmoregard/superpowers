@@ -97,6 +97,7 @@ Exception: **project-shaping decisions** (language/framework choice when not yet
 
 **Exploring approaches:**
 
+- For non-trivial features, the prior-art survey from the previous step has already produced an Adopt/Extend/Compose/Build matrix. Use it as the starting set of candidate approaches before adding alternatives from your own knowledge.
 - Propose 2-3 different approaches with trade-offs
 - Present options conversationally with your recommendation and reasoning
 - Lead with your recommended option and explain why
@@ -164,6 +165,7 @@ Wait for the user's response. If they request changes, make them and re-run the 
 - **Multiple choice preferred** - Easier to answer than open-ended.
 - **YAGNI ruthlessly** - Remove unnecessary features from all designs.
 - **Explore alternatives** - Always propose 2-3 approaches before settling.
+- **Survey prior art before approaches** - For non-trivial features, the `researching-prior-art` skill produces a candidate matrix. Use it to seed approaches rather than starting from scratch.
 - **Incremental validation** - Present design, get approval before moving on.
 - **Be flexible** - Go back and clarify when something doesn't make sense.
 

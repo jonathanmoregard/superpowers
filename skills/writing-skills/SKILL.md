@@ -131,10 +131,41 @@ Link to file for heavy reference or reusable tools
 
 ## Common Mistakes
 What goes wrong + fixes
-
-## Real-World Impact (optional)
-Concrete results
 ```
+
+## Skill Files Carry Instructions Only
+
+**A skill file contains WHAT to do, WHEN to do it, and HOW. Nothing else.**
+
+The reader is an agent mid-task who needs to act. Anything that is not
+actionable in that moment is noise competing with the instruction.
+
+**Exclude:**
+
+- Why the skill exists, what problem prompted it, what it is "about"
+- Provenance: dated incidents, "on 2026-01-02 we found...", session narrative,
+  what a baseline run showed, who was wrong and how
+- Justification aimed at convincing the reader the rule is correct
+- Quoted rationalizations attributed to past runs or conversations
+- Anything a reader would skip to reach the instruction
+
+**Include:** the rule, the trigger, the steps, the self-check.
+
+Write every statement as an instruction to follow, not a fact to consider.
+State the rule; do not argue for it.
+
+**Conversation remnants are the most common failure.** A skill written straight
+after the incident that motivated it tends to carry that incident's specifics —
+names, dates, the particular bug, the particular wrong turn. None of it applies
+in the context where the skill will be read. Strip it before committing, and
+check the description for it too.
+
+Keep excuse/counter tables only when each row is a generic instruction
+("Excuse → do this instead"). Drop the row if it only makes sense to someone who
+was present for the original incident.
+
+Record why the skill exists in the commit message, the PR body, or a project
+note — never in the skill.
 
 
 ## Claude Search Optimization (CSO)
@@ -626,6 +657,8 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Quick reference table
 - [ ] Common mistakes section
 - [ ] No narrative storytelling
+- [ ] Instructions only — no why-it-exists, no provenance, no dated incidents, no
+      conversation remnants from the session that motivated the skill
 - [ ] Supporting files only for tools or heavy reference
 
 **Deployment:**

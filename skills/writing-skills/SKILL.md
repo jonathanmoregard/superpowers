@@ -58,6 +58,27 @@ The entire skill creation process follows RED-GREEN-REFACTOR.
 - Project-specific conventions (put in CLAUDE.md)
 - Mechanical constraints (if it's enforceable with regex/validation, automate it—save documentation for judgment calls)
 
+## Research SOTA Before Writing
+
+**If the topic is common rather than bespoke, research current best practice
+before writing the skill.**
+
+Applies when the skill documents a public tool, API, framework, protocol, file
+format, or a widely-solved engineering problem — anything with upstream docs, a
+changelog, or an established convention. Skip it only for genuinely custom
+material: your own repo's workflow, a personal preference, a local script.
+
+Do this in the GREEN phase, before drafting:
+
+1. Research the authoritative source — official docs first, dated, with the
+   version the docs describe.
+2. Reconcile every factual claim you were about to write against it.
+3. Note anything the source hedges or leaves undocumented; carry the hedge into
+   the skill rather than hardening it into a rule.
+
+A skill that documents last year's API confidently is worse than no skill: it is
+wrong in a form future agents will trust and act on.
+
 ## Skill Types
 
 ### Technique
@@ -634,6 +655,7 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Identify patterns in rationalizations/failures
 
 **GREEN Phase - Write Minimal Skill:**
+- [ ] Topic is common, not bespoke? Research SOTA and reconcile claims BEFORE drafting
 - [ ] Name uses only letters, numbers, hyphens (no parentheses/special chars)
 - [ ] YAML frontmatter with required `name` and `description` fields (max 1024 chars; see [spec](https://agentskills.io/specification))
 - [ ] Description starts with "Use when..." and includes specific triggers/symptoms

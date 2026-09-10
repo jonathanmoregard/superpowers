@@ -7,62 +7,55 @@ description: "You MUST use this before any creative work - creating features, bu
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+Start by understanding the current project context, then ask only material questions one at a time. Once you understand what you're building, present the design, write and self-review the spec, then continue to planning without a redundant approval pause.
 
-<HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
-</HARD-GATE>
+## Proceed After Clear Authorization
+
+A clear request to implement is authorization to continue through design, spec, planning, and implementation. Present the design before implementation, but do not stop solely to ask whether the design or written spec is approved. Pause only when an unresolved choice would materially change the result or continuing requires new authority. Incorporate corrections whenever the user sends them.
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it before proceeding.
 
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits
-2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
+2. **Choose medium** — default to text; use the visual companion only when the user has already opted in. See the Visual Companion section below.
 3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Survey prior art** — invoke `superpowers:researching-prior-art` for non-trivial features (impact gate decides). Use the returned matrix to seed the 2-3 approaches in step 5. If a prior-art matrix has already been produced this session for the same scope, reuse it instead of re-invoking — no second survey.
+4. **Survey prior art** — invoke `superpowers:researching-prior-art` for non-trivial features (impact test decides). Use the returned matrix to seed the 2-3 approaches in step 5. If a prior-art matrix has already been produced this session for the same scope, reuse it instead of re-invoking — no second survey.
 5. **Propose 2-3 approaches** — with trade-offs and your recommendation
-6. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Present design** — in sections scaled to their complexity, state assumptions and the intended next step
 7. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
 8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-9. **User reviews written spec** — ask user to review the spec file before proceeding
-10. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+9. **Transition to implementation** — invoke writing-plans skill to create implementation plan without waiting for another approval
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
     "Explore project context" [shape=box];
-    "Visual questions ahead?" [shape=diamond];
-    "Offer Visual Companion\n(own message, no other content)" [shape=box];
+    "Visual companion already enabled?" [shape=diamond];
+    "Use visual companion where useful" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Survey prior art" [shape=box];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
     "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Explore project context" -> "Visual questions ahead?";
-    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
-    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
-    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
+    "Explore project context" -> "Visual companion already enabled?";
+    "Visual companion already enabled?" -> "Use visual companion where useful" [label="yes"];
+    "Visual companion already enabled?" -> "Ask clarifying questions" [label="no"];
+    "Use visual companion where useful" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Survey prior art";
     "Survey prior art" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
+    "Present design sections" -> "Write design doc";
     "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "Spec self-review\n(fix inline)" -> "Invoke writing-plans skill";
 }
 ```
 
@@ -85,11 +78,11 @@ digraph brainstorming {
 
 This section exists because users consistently report brainstorming asking too many low-value questions, especially on small tasks. Apply all four rules below.
 
-1. **Impact gate — ask only when the answer changes the spec.** Before every question, silently answer: "If the user said X vs Y, what part of the design, architecture, or UX would change?" If the honest answer is "nothing material," do NOT ask — pick the most reasonable default and state it as an assumption (see rule 2). Ask only when competing answers produce materially different designs. This is your primary filter.
+1. **Impact test — ask only when the answer changes the spec.** Before every question, silently answer: "If the user said X vs Y, what part of the design, architecture, or UX would change?" If the honest answer is "nothing material," do NOT ask — pick the most reasonable default and state it as an assumption (see rule 2). Ask only when competing answers produce materially different designs. This is your primary filter.
 
 2. **Assumption-first for low-impact gaps — default out loud instead of asking.** Where a defensible default exists (framework choice, file layout, naming convention, error-format specifics, logging level, test framework within the project's existing stack), state the assumption explicitly and move on. Format: *"Assuming `<default>` — let me know if you'd rather `<alternative>`."* This gives the user a chance to correct without stopping the flow for them.
 
-3. **Scope-scale — small tasks default to assumption-first.** For changes scoped to a single file or a single behavior tweak, the default is to ask **zero** questions. Pick defaults, announce them in one line, proceed to the design. Only ask when the impact gate in rule 1 clearly fires. Do not ask questions to fill a quota; do not ask to "be thorough" on a small change.
+3. **Scope-scale — small tasks default to assumption-first.** For changes scoped to a single file or a single behavior tweak, the default is to ask **zero** questions. Pick defaults, announce them in one line, proceed to the design. Only ask when the impact test in rule 1 clearly fires. Do not ask questions to fill a quota; do not ask to "be thorough" on a small change.
 
 4. **Soft cap: 3–5 questions total.** If you've already asked 3 questions and still feel uncertain, review what remains — can you resolve the rest via assumption-first (rule 2)? If a 4th or 5th question is truly needed, ask it. **After 5, no more questions — switch entirely to assumption-first mode** and state remaining assumptions as a list at the top of the design, letting the user correct any that are wrong.
 
@@ -106,7 +99,8 @@ Exception: **project-shaping decisions** (language/framework choice when not yet
 
 - Once you believe you understand what you're building, present the design
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
+- Present the design as one cohesive response by default; use sections when complexity requires them
+- State assumptions clearly and continue unless the user sends a correction or a material choice remains unresolved
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
 
@@ -127,7 +121,7 @@ Exception: **project-shaping decisions** (language/framework choice when not yet
 
 **Documentation:**
 
-- Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+- Write the design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
   - (User preferences for spec location override this default)
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
@@ -142,22 +136,15 @@ After writing the spec document, look at it with fresh eyes:
 
 Fix any issues inline. No need to re-review — just fix and move on.
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
-
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
-
 **Implementation:**
 
-- Invoke the writing-plans skill to create a detailed implementation plan
+- Invoke the writing-plans skill immediately after self-review to create a detailed implementation plan
 - Do NOT invoke any other skill. writing-plans is the next step.
 
 ## Key Principles
 
 - **Use context you already have** - `CLAUDE.md`, open files, recent commits, memory, prior messages. Answer your own question from that before asking the user.
-- **Impact gate before every question** - Only ask when competing answers would materially change the design. Otherwise, pick a default and state it.
+- **Impact test before every question** - Only ask when competing answers would materially change the design. Otherwise, pick a default and state it.
 - **Assumption-first over asking** - For low-impact gaps, default aloud ("Assuming X — say if you'd rather Y") and keep moving.
 - **Soft cap 3–5 questions total** - After 5, switch to pure assumption-first and list remaining assumptions at the top of the design.
 - **Small tasks → zero questions by default** - Single-file or single-behavior changes: pick defaults, announce, design. Don't ask to fill quota.
@@ -166,17 +153,14 @@ Wait for the user's response. If they request changes, make them and re-run the 
 - **YAGNI ruthlessly** - Remove unnecessary features from all designs.
 - **Explore alternatives** - Always propose 2-3 approaches before settling.
 - **Survey prior art before approaches** - For non-trivial features, the `researching-prior-art` skill produces a candidate matrix. Use it to seed approaches rather than starting from scratch.
-- **Incremental validation** - Present design, get approval before moving on.
+- **Visible design, uninterrupted execution** - Present design and assumptions, then proceed after clear implementation authorization.
 - **Be flexible** - Go back and clarify when something doesn't make sense.
 
 ## Visual Companion
 
 A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
 
-**Offering the companion:** When you anticipate that upcoming questions will involve visual content (mockups, layouts, diagrams), offer it once for consent:
-> "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
-
-**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only brainstorming.
+**Starting the companion:** Default to text-only brainstorming. Use the companion only when the user has already requested or accepted visual treatment. You may mention its availability in a normal progress update while continuing text-only, but never send a standalone offer that pauses the workflow.
 
 **Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
 

@@ -101,6 +101,17 @@ Use the least powerful model that can handle each role to conserve cost and incr
 - Touches multiple files with integration concerns → standard model
 - Requires design judgment or broad codebase understanding → most capable model
 
+**Which concrete model fills a tier is routed, not guessed.** The three
+tiers above map to `fast`, `standard`, `strongest` in the `ai-router` skill.
+Before dispatching, run `ai-router pick --tier <tier> --json`: it returns the
+highest-ranked model whose provider still has usage-cap headroom. When the
+result says `native: true`, dispatch with your native subagent tool and
+`model: <pick.model>`. When it says `native: false`, your own provider is
+below its reserve and the pick is the other provider (Codex from Claude, or
+Claude from Codex) — run the job with `ai-router delegate` instead, and follow
+it with `wait`/`peek`/`result` as that skill describes. Never pin a model by
+name when the router reports it ineligible.
+
 ## Handling Implementer Status
 
 Implementer subagents report one of four statuses. Handle each appropriately:

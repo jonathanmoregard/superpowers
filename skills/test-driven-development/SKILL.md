@@ -24,9 +24,24 @@ Write the test first. Watch it fail. Write minimal code to pass.
 **Exceptions (ask your human partner):**
 - Throwaway prototypes
 - Generated code
-- Configuration files
+
+**Standing exception (no need to ask):** declarative configuration — adding a package, setting an option, bumping a pin. Evaluation/build is the test. See "When a Test Is Not Warranted" below.
 
 Thinking "skip TDD just this once"? Stop. That's rationalization.
+
+## When a Test Is Not Warranted
+
+Before writing a test, name the production change that would make it fail:
+
+- **A plausible bug** (wrong branch, missed side effect, bad boundary, broken contract) → write it, red first.
+- **A deliberate decision** (a pin, a package name, a model ID, a setting you just wrote) → don't. That is a change-detector test: it restates the implementation and only fails when someone means to change it. If the decision matters, test the behavior that depends on it — not `MAX_RETRIES == 5`, but "the 6th attempt never happens".
+- **Nothing you can name** → don't write it.
+
+Skip when the build, evaluator, type checker, or linter already fails on the same mistake — and say you skipped and why. Prefer invariants/properties that must hold over examples that restate the code.
+
+Declarative config (Nix, Terraform, YAML): eval/build is the check. Add integration/VM tests only for runtime behavior; write cross-cutting invariants once ("no service listens on 0.0.0.0"), not per change. Depth matches risk.
+
+This narrows *what* earns a test. It does not relax red-green for real logic.
 
 ## The Iron Law
 
@@ -368,4 +383,4 @@ Production code → test exists and failed first
 Otherwise → not TDD
 ```
 
-No exceptions without your human partner's permission.
+No exceptions without your human partner's permission, except those in "When a Test Is Not Warranted".

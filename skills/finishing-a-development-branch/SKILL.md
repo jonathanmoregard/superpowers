@@ -1,15 +1,17 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: Use when implementation is complete, all tests pass, and the branch needs integration, publication, preservation, or cleanup
 ---
 
 # Finishing a Development Branch
 
 ## Overview
 
-Guide completion of development work by presenting clear options and handling chosen workflow.
+Guide completion of development work by following established delivery intent
+and repository policy, asking only when a material choice remains.
 
-**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+**Core principle:** Verify tests → Determine the authorized outcome → Execute or
+ask one focused question → Clean up.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -46,22 +48,27 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 
 Or ask: "This branch split from main - is that correct?"
 
-### Step 3: Present Options
+### Step 3: Determine the Delivery Outcome
 
-Present exactly these 4 options:
+Resolve the outcome from the strongest available signal, in this order:
 
-```
-Implementation complete. What would you like to do?
+1. The user's explicit request from any point in the conversation
+2. Repository instructions or an established delivery workflow
+3. The conventional safe outcome for the repository
 
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
+When the outcome is established and authorized, proceed directly. Do not ask
+the user to choose it again.
 
-Which option?
-```
+When policy requires a specific approval, ask only for that approval. Example:
+`Open the PR?`
 
-**Don't add explanation** - keep options concise.
+When multiple outcomes remain plausible and materially different, ask one
+focused question with only the relevant choices and put the recommended choice
+first. Do not show a generic menu.
+
+**Never offer discard as a routine completion option.** Abandon work only when
+the user has expressed intent to discard, abandon, supersede, or clean it up;
+then use the confirmation in Step 4.
 
 ### Step 4: Execute Choice
 
@@ -164,9 +171,16 @@ git worktree remove <worktree-path>
 - **Problem:** Merge broken code, create failing PR
 - **Fix:** Always verify tests before offering options
 
-**Open-ended questions**
-- **Problem:** "What should I do next?" → ambiguous
-- **Fix:** Present exactly 4 structured options
+**Ignoring established delivery intent**
+- **Problem:** Asking the user to choose an outcome they already requested or
+  repository policy already determines
+- **Fix:** Infer the authorized outcome before asking anything
+
+**Generic completion menus**
+- **Problem:** Irrelevant choices create friction and make destructive cleanup
+  look routine
+- **Fix:** Ask one focused question only when a material choice remains; never
+  offer discard without abandonment intent
 
 **Automatic worktree cleanup**
 - **Problem:** Remove worktree when might need it (Option 2, 3)
@@ -181,13 +195,17 @@ git worktree remove <worktree-path>
 **Never:**
 - Proceed with failing tests
 - Merge without verifying tests on result
+- Ask the user to repeat an established delivery choice
+- Offer discard without evidence the user wants to abandon the work
 - Delete work without confirmation
 - Force-push without explicit request
 
 **Always:**
-- Verify tests before offering options
-- Present exactly 4 options
-- Get typed confirmation for Option 4
+- Verify tests before completing delivery
+- Follow explicit user intent and repository delivery policy
+- Ask only the focused question needed to resolve a genuine ambiguity or
+  approval gate
+- Get typed confirmation before discarding work
 - Clean up worktree for Options 1 & 4 only
 
 ## Integration

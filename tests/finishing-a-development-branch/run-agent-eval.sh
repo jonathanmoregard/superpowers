@@ -85,7 +85,7 @@ EOF
       GH_EVAL_LOG="$run_dir/gh.log" \
       timeout 300 claude -p "$prompt" \
         --plugin-dir "$plugin_dir" \
-        --dangerously-skip-permissions \
+        --permission-mode bypassPermissions \
         --max-turns 12 \
         --verbose \
         --output-format stream-json \

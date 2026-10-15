@@ -1,173 +1,282 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "You MUST use this before any creative work - creating features, building components, adding functionality, modifying behavior, or planning anything new, in software or out of it (a talk, a business, a renovation)."
 ---
 
-# Brainstorming Ideas Into Designs
+# Brainstorming
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+You are very good at building. You build what you believe your human
+partner wants, and that belief is usually thinner than it feels. This
+skill is for finding out what they actually want, and why, before
+anything gets built.
 
-Start by understanding the current project context, then ask only material questions one at a time. Once you understand what you're building, present the design, write and self-review the spec, then continue to planning without a redundant approval pause.
+People often haven't finished working out what they want. Good questions
+help them think it through. When you understand the why, you make the
+hundred decisions they never mention the way they would have made them.
 
-## Proceed After Clear Authorization
+## First: What Do You Actually Know?
 
-A clear request to implement is authorization to continue through design, spec, planning, and implementation. Present the design before implementation, but do not stop solely to ask whether the design or written spec is approved. Pause only when an unresolved choice would materially change the result or continuing requires new authority. Incorporate corrections whenever the user sends them.
+Before you reply, ask yourself: what do I know about what they want, and
+why?
 
-## Anti-Pattern: "This Is Too Simple To Need A Design"
+- **Everything that matters is in the request** ("make the icon cornflower
+  blue"). This is a quick, clear task. Do it, and say what you did.
+- **Something non-trivial is missing.** Start the conversation.
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it before proceeding.
+"Missing" means missing from everything you can already see, not just
+the request: `CLAUDE.md`, open files, recent commits, git status, memory,
+and what they've already told you. Never ask a question whose answer is
+already in your context; answer it yourself. A gap whose answer wouldn't
+change what gets built isn't missing either: default it out loud (see
+Ask Only What Changes the Design).
 
-## Checklist
+## Your First Message
 
-You MUST create a task for each of these items and complete them in order:
+Your first message is two things, in this order:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Choose medium** — default to text; use the visual companion only when the user has already opted in. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Survey prior art** — invoke `superpowers:researching-prior-art` for non-trivial features (impact test decides). Use the returned matrix to seed the 2-3 approaches in step 5. If a prior-art matrix has already been produced this session for the same scope, reuse it instead of re-invoking — no second survey.
-5. **Propose 2-3 approaches** — with trade-offs and your recommendation
-6. **Present design** — in sections scaled to their complexity, state assumptions and the intended next step
-7. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
-8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan without waiting for another approval
+1. One line letting them know that if they'd rather skip the questions and
+   have you just start, they can say so. If they take you up on it, this
+   skill is done: state any significant how-it-gets-made choice
+   (platform, language, medium) in one plain line, then do what they
+   asked through the normal workflow.
+2. One open question that gets them describing. Ask about a real moment
+   or a concrete picture: "What's the moment you find yourself wishing
+   this existed?" or "Tell me about the people who'll be in the room."
 
-## Process Flow
+That's the whole message.
 
-```dot
-digraph brainstorming {
-    "Explore project context" [shape=box];
-    "Visual companion already enabled?" [shape=diamond];
-    "Use visual companion where useful" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Survey prior art" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "Invoke writing-plans skill" [shape=doublecircle];
+## The Conversation
 
-    "Explore project context" -> "Visual companion already enabled?";
-    "Visual companion already enabled?" -> "Use visual companion where useful" [label="yes"];
-    "Visual companion already enabled?" -> "Ask clarifying questions" [label="no"];
-    "Use visual companion where useful" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Survey prior art";
-    "Survey prior art" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "Write design doc";
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "Invoke writing-plans skill";
-}
-```
+Each message ends with one question: a single sentence with no list of
+example answers hanging off it. Use plain language, pitched just a little
+above where your human partner is. Match their vocabulary; never use
+process jargon.
 
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+Be clear and concise. Lead with what matters. Avoid jargon. When you
+report what you found, give them the most important findings and offer
+the rest.
 
-## The Process
+**Get them describing.** Open questions come first. Their own words carry
+intent that your options can't. Offer a short menu only when they're
+stuck. When they say "just guess" or "what do you think?", propose
+something concrete.
 
-**Understanding the idea:**
+**How it gets made.** Every project rests on choices about medium, tools,
+materials, and resources: the platform, programming language, and
+libraries for an app; the medium for a piece of art. Find out early which
+of those choices they want to make, which they're handing to you, and what
+they already have to work with. Someone with strong views or skills will
+want to talk it through. Someone counting on you needs sensible defaults,
+said in plain words. When there's existing work, build on what it already
+uses. Any choice you make goes in the design as your call, never as
+something they agreed to.
 
-- Check out the current project state first (files, docs, recent commits)
-- **Use context already loaded in your conversation** — `CLAUDE.md`, open files, recent commits, git status, memory, and anything the user has already told you *are already available to you*. Never ask a question whose answer is already in your current context. Before asking anything, do a mental scan of what you already know and answer the question yourself if you can.
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+**Ground to cover.** This is territory, not a script. Never read these
+out as questions:
 
-**Question discipline (read before asking anything):**
+- what kind of thing this is, and what makes it special
+- why now, and what success looks like to them
+- goals, non-goals, and anti-goals (what would make this a failure even
+  if it technically works)
+- prior art: what they've seen elsewhere, loved or hated
+- current state: what exists now, what they've tried
+- the details they care about
 
-This section exists because users consistently report brainstorming asking too many low-value questions, especially on small tasks. Apply all four rules below.
+**Questions that work** anchor in specifics: "Walk me through the last
+time...", "If it could only do one of these well, which?", "What would
+make you wince if I got it wrong?" A guess they can correct ("I'm
+guessing this is because X keeps biting you?") often beats a question.
 
-1. **Impact test — ask only when the answer changes the spec.** Before every question, silently answer: "If the user said X vs Y, what part of the design, architecture, or UX would change?" If the honest answer is "nothing material," do NOT ask — pick the most reasonable default and state it as an assumption (see rule 2). Ask only when competing answers produce materially different designs. This is your primary filter.
+**Offer recon.** Once you have a bit of grounding and looking would help,
+offer to go look: their codebase or project, their own files and data,
+or the web. Say what you'd look for. They decide whether you go.
 
-2. **Assumption-first for low-impact gaps — default out loud instead of asking.** Where a defensible default exists (framework choice, file layout, naming convention, error-format specifics, logging level, test framework within the project's existing stack), state the assumption explicitly and move on. Format: *"Assuming `<default>` — let me know if you'd rather `<alternative>`."* This gives the user a chance to correct without stopping the flow for them.
+**Survey prior art.** For non-trivial work (the impact test below
+decides), once your questions are answered and before you propose
+anything, invoke `superpowers:researching-prior-art`. This is part of the
+process, not recon you need to offer. Use the Adopt/Extend/Compose/Build
+matrix it returns as the starting set of ideas, then add alternatives from
+your own knowledge. If a prior-art matrix already exists this session for
+the same scope, reuse it; no second survey.
 
-3. **Scope-scale — small tasks default to assumption-first.** For changes scoped to a single file or a single behavior tweak, the default is to ask **zero** questions. Pick defaults, announce them in one line, proceed to the design. Only ask when the impact test in rule 1 clearly fires. Do not ask questions to fill a quota; do not ask to "be thorough" on a small change.
+**Think wide privately.** Before you propose anything, come up with
+several ideas, seeded by the prior-art matrix when there is one, and drop
+the weak ones, including any that fight what they've told you about why. Show the comparison only when it helps them
+decide.
 
-4. **Soft cap: 3–5 questions total.** If you've already asked 3 questions and still feel uncertain, review what remains — can you resolve the rest via assumption-first (rule 2)? If a 4th or 5th question is truly needed, ask it. **After 5, no more questions — switch entirely to assumption-first mode** and state remaining assumptions as a list at the top of the design, letting the user correct any that are wrong.
+**Show, don't tell.** Mention the visual companion (below) whenever seeing
+would help more than reading:
 
-Exception: **project-shaping decisions** (language/framework choice when not yet set, persistence strategy, core data model, public API shape) are high-impact and the cap doesn't apply to them — but rule 1 still does.
+- something they'll look at: a screen, a page, a printout, a sign
+- a layout or arrangement: of a screen, a room, a schedule
+- a flow or a sequence of steps
+- options that would look different from each other
+- a structure that's easier to see than read: a diagram, a timeline, a map
 
-**Exploring approaches:**
+Once they've accepted, use it for mockups to react to, side-by-side
+options, and throwaway prototypes they can click.
 
-- For non-trivial features, the prior-art survey from the previous step has already produced an Adopt/Extend/Compose/Build matrix. Use it as the starting set of candidate approaches before adding alternatives from your own knowledge.
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+**Spike to feel things out.** Agentic work is waterfall, but very, very
+fast. A quick throwaway build is often the cheapest way to learn what
+they want or whether something works. Offer one when it would help.
+When they just want to spike, get out of the way. Spikes get no tests
+or minimal ones, aren't bulletproof, and skip the plan, implementation,
+and review process. Bring what the spike taught you back into the
+conversation.
 
-**Presenting the design:**
+## Ask Only What Changes the Design
 
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Present the design as one cohesive response by default; use sections when complexity requires them
-- State assumptions clearly and continue unless the user sends a correction or a material choice remains unresolved
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+Apply all four rules before every question:
 
-**Design for isolation and clarity:**
+1. **Impact test.** Silently answer: "If they said X vs Y, what part of
+   the design, architecture, or experience would change?" If the honest
+   answer is "nothing material," don't ask. Ask only when competing
+   answers produce materially different results. This is your primary
+   filter.
+2. **Assumption-first for low-impact gaps.** Where a defensible default
+   exists (file layout, naming, error-format specifics, logging level, a
+   test framework within the existing stack), state it and move on:
+   *"Assuming `<default>`; say if you'd rather `<alternative>`."* They can
+   correct you without the flow stopping for them.
+3. **Small tasks: zero questions by default.** For a change scoped to a
+   single file or a single behavior tweak, pick defaults, announce them in
+   one line, and go to the description. Never ask to fill a quota or to
+   "be thorough."
+4. **Soft cap: 3-5 questions total.** After 3, check whether the rest can
+   be settled assumption-first. After 5, stop asking: list the remaining
+   assumptions at the top of the description and let them correct any
+   that are wrong.
 
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+Exception: project-shaping decisions (language or framework when not yet
+set, persistence strategy, core data model, public API shape) are exempt
+from the cap, but the impact test still applies.
 
-**Working in existing codebases:**
+## Play It Back
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+Play back as you go. As soon as you understand one part well enough to
+describe it (what it's for and who it serves, say, or how one piece
+behaves), describe that part back in about 200-300 words, then return to
+questions about the next part. Playback and questions alternate through
+the whole conversation; the last chunk covers whatever is left.
 
-## After the Design
+Mark anything you're guessing as your guess; only what they said goes in
+as theirs. End each chunk by asking what's wrong or missing. After a
+clear request to implement (see the gate below), invite corrections
+instead of waiting for them: state your assumptions and keep going.
 
-**Documentation:**
+Before you send a chunk, check it: does it describe something they'll
+look at, like a page, a screen, a schedule, or a printout? If so, and
+they haven't seen the visual companion offer yet, add the one-line offer
+(below) to the chunk. Once they've accepted, put a mockup next to the
+description.
 
-- Write the design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+## Size the Work
 
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
+Once you understand what they want, pick a size and say it in plain
+words. They can override it.
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+| Size | The full description | Then |
+|------|----------------------|------|
+| A quick, clear task | the request itself | do it |
+| A small change | in chat | build it through the normal workflow |
+| A project with a written design | a written design document | a full plan (for software: superpowers:writing-plans) |
 
-Fix any issues inline. No need to re-review — just fix and move on.
+If it grows mid-task, stop, say so, and step up a size.
 
-**Implementation:**
+If this is really several independent projects, say so, agree on an
+order, and brainstorm them one at a time.
 
-- Invoke the writing-plans skill immediately after self-review to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
+## The Written Design
 
-## Key Principles
+For a project, write a plain document a talented builder in the domain
+could plan from without going back to your human partner. Cover:
 
-- **Use context you already have** - `CLAUDE.md`, open files, recent commits, memory, prior messages. Answer your own question from that before asking the user.
-- **Impact test before every question** - Only ask when competing answers would materially change the design. Otherwise, pick a default and state it.
-- **Assumption-first over asking** - For low-impact gaps, default aloud ("Assuming X — say if you'd rather Y") and keep moving.
-- **Soft cap 3–5 questions total** - After 5, switch to pure assumption-first and list remaining assumptions at the top of the design.
-- **Small tasks → zero questions by default** - Single-file or single-behavior changes: pick defaults, announce, design. Don't ask to fill quota.
-- **One question at a time** - When you do ask, one per message.
-- **Multiple choice preferred** - Easier to answer than open-ended.
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs.
-- **Explore alternatives** - Always propose 2-3 approaches before settling.
-- **Survey prior art before approaches** - For non-trivial features, the `researching-prior-art` skill produces a candidate matrix. Use it to seed approaches rather than starting from scratch.
-- **Visible design, uninterrupted execution** - Present design and assumptions, then proceed after clear implementation authorization.
-- **Be flexible** - Go back and clarify when something doesn't make sense.
+- intent and the why
+- goals, non-goals, anti-goals
+- constraints
+- the parts of the how they decided, as they decided them
+- what's left to the builder
+
+**Where it goes:** in a software repo,
+`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`, committed.
+Otherwise, ask. Your human partner's preferences override both.
+
+**Builder check:** dispatch a fresh subagent with
+`builder-check-prompt.md` in this directory. When you tell your human
+partner you're writing it up, say a reviewer will read it first and you
+may come back once with a few questions. Don't hand over the document
+until the check is back. Sort what the builder asks into three piles:
+
+- **Answered already** by the conversation or the project: put the answer
+  in the document.
+- **Minor:** a sensible builder could settle it without changing what gets
+  built. Settle it yourself and mark it in the document as your call.
+- **Theirs:** only your human partner can answer it, and the answer changes
+  what gets built.
+
+Bring the "theirs" pile in one message, most important first. Update the
+document with their answers, then hand it over with a short list of the
+calls you made so they can check those while reading. That's the only
+round of questions the check produces. Without a subagent tool, read the
+document as that builder yourself.
+
+<HARD-GATE>
+Nothing gets built until your human partner approves the full
+description: in chat for a small change, the document for a project.
+Building includes writing product code, scaffolding, installing
+dependencies, creating projects, and invoking an implementation skill.
+Reading and exploring are fine.
+
+A clear request to implement is that approval given in advance. Still
+present the full description (after the builder check, for a project)
+before building, but don't stop only to ask whether it's approved: state
+your assumptions and continue through the plan and implementation. Pause
+only when an unresolved choice would materially change the result or
+continuing needs authority they haven't given. Fold in corrections
+whenever they arrive.
+
+Two exceptions. If they opted out of the questions, the skill is done
+and the gate goes with it. A spike they said yes to may be built; it
+stays labeled throwaway, and keeping what it produced is a new request
+that comes back through this gate.
+
+After a project's document is approved, the next step is the plan. For
+software, invoke superpowers:writing-plans and no other skill.
+</HARD-GATE>
+
+## Red Flags
+
+| Thought | Reality |
+|---------|---------|
+| "I'll offer options to save them effort" | Options steer. Ask them to describe it first. |
+| "I'll fill in sensible defaults" | Good. Say them out loud. A default they never heard is one they couldn't reject. |
+| "I should explain the process first" | Ask your question. The process shows itself. |
+| "They said 'sounds good' to the idea" | Approval covers what you showed them. A description you haven't written isn't approved. |
+| "The spike works, I'll keep building on it" | Keeping it is a new request. Back through the gate. |
+| "I already know the options" | For non-trivial work, survey prior art first. The matrix seeds the ideas; don't start from scratch. |
+| "I'll ask, just to be thorough" | Impact test first. If no answer would change the design, default it out loud. |
+| "They asked me to build it, but I should confirm the design" | A clear request to implement is the approval. Show the design and keep going. |
 
 ## Visual Companion
 
-A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
+A browser tab for showing mockups, diagrams, and prototypes. It's a
+tool, not a mode: accepting it doesn't send every question to the
+browser.
 
-**Starting the companion:** Default to text-only brainstorming. Use the companion only when the user has already requested or accepted visual treatment. You may mention its availability in a normal progress update while continuing text-only, but never send a standalone offer that pauses the workflow.
+**Offer it just-in-time, inline.** Default to text. Offer it the first
+time one of the moments above comes up, never upfront, as one line in
+your normal message while you carry on in text:
 
-**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
+> "This might be easier if I show you. Want me to open a browser tab with some mockups?"
 
-- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
-- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
+Never send a standalone offer that holds back other content or pauses
+the work. Use it only once they've accepted. If they decline or ignore
+it, stay in text and don't offer again unless they raise it.
 
-A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
+**Per question, ask: would they understand this better by seeing it?**
+Mockups, layouts, diagrams, and side-by-side designs go in the browser.
+Requirements, scope, tradeoffs, and conceptual choices stay in text. A
+question about a UI topic isn't automatically a visual question.
 
-If they agree to the companion, read the detailed guide before proceeding:
-`skills/brainstorming/visual-companion.md`
+If they accept, read `visual-companion.md` in this directory before
+starting the server.
